@@ -54,7 +54,6 @@ body {
     color: white;
     border-radius: 12px;
     padding: 25px;
-    /* O padding-right foi removido, pois o botão não está mais dentro do header */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -179,12 +178,9 @@ body {
     margin-top: 5px;
 }
 
-/* Botão Theme Toggle (Fixado na tela, canto superior direito) */
+/* Botão Theme Toggle (Agora como parte do Flexbox do Header) */
 .theme-toggle {
-    position: fixed; /* Fixa o botão na tela, não no header */
-    top: 25px; /* Mesma altura do padding do header */
-    right: 25px; /* Mesma distância da borda direita */
-    background-color: #0c1b33; /* Cor do header para se camuflar */
+    background-color: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
     color: white;
     font-size: 18px;
@@ -196,11 +192,12 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 100; /* Fica acima de tudo */
+    flex-shrink: 0; /* Impede o botão de ser esmagado */
+    margin-left: 20px; /* Dá um espaço entre a caixa de destaque e o botão */
 }
 
 .theme-toggle:hover {
-    background-color: #1a202c;
+    background-color: rgba(255, 255, 255, 0.2);
     transform: scale(1.1);
 }
 
