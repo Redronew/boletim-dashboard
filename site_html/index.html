@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Boletim - Ciência de Dados</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        
+        <!-- CABEÇALHO -->
+        <header class="header">
+            <div class="header-esquerda">
+                <h1>DESEMPENHO ACADÊMICO</h1>
+                <p class="subtitulo" id="texto-semestre">SEMESTRE 2 - 2026/2</p>
+                
+                <div class="botoes-semestre">
+                    <button onclick="renderizarDashboard(dadosSemestre1, 'SEMESTRE 1 - 2026/1', this)" class="btn-semestre">1º Semestre</button>
+                    <button onclick="renderizarDashboard(dadosSemestre2, 'SEMESTRE 2 - 2026/2', this)" class="btn-semestre ativo">2º Semestre</button>
+                </div>
+            </div>
+            
+            <div class="metricas-topo">
+                <div class="metrica destaque-global">
+                    <span>MÉDIA GLOBAL (CURSO)</span>
+                    <h2 id="media-global-topo" style="color: #00d2ff;">7.98</h2>
+                    <small>Todos os semestres</small>
+                </div>
+
+                <div class="metrica">
+                    <span>MÉDIA DO SEMESTRE</span>
+                    <h2 id="media-geral-topo">7.82</h2>
+                    <small>de 10,00</small>
+                </div>
+                <div class="metrica">
+                    <span>ACIMA DA MÉDIA</span>
+                    <h2 id="acima-topo" style="color: #2ca02c;">3</h2>
+                    <small>Disciplinas</small>
+                </div>
+                <div class="metrica">
+                    <span>ABAIXO DA MÉDIA</span>
+                    <h2 id="abaixo-topo" style="color: #d62728;">2</h2>
+                    <small>Disciplinas</small>
+                </div>
+            </div>
+
+            <div class="destaque">
+                <h3>⭐ DESTAQUE</h3>
+                <p id="destaque-texto">Melhores resultados em Algoritmos e Programação.</p>
+                <p id="alerta-texto" class="alerta">Atenção às disciplinas de Fundamentos e Tópicos Especiais.</p>
+            </div>
+
+            <button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" title="Alternar Tema">
+                🌙
+            </button>
+        </header>
+
+        <!-- TABELA E ROSCA -->
+        <main class="conteudo-principal">
+            <div class="card tabela-card">
+                <h3>DISCIPLINAS</h3>
+                <table id="tabela-notas">
+                    <thead>
+                        <tr>
+                            <th>Disciplina</th>
+                            <th style="text-align: center;">Média Final</th>
+                            <th style="text-align: center;">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Preenchido via JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card rosca-card">
+                <h3>DISTRIBUIÇÃO DO DESEMPENHO</h3>
+                
+                <div class="rosca-conteudo">
+                    <div class="grafico-container">
+                        <canvas id="graficoRosca"></canvas>
+                        <div class="rosca-centro">
+                            <span id="total-disciplinas">5</span>
+                            <small>disciplinas</small>
+                        </div>
+                    </div>
+                    
+                    <div class="legenda-customizada">
+                        <div class="legenda-item">
+                            <span class="dot verde"></span>
+                            <div>
+                                <strong>Acima da média (≥ 7,00)</strong>
+                                <p id="legenda-acima">2 disciplinas (40%)</p>
+                            </div>
+                        </div>
+                        <div class="legenda-item">
+                            <span class="dot amarelo"></span>
+                            <div>
+                                <strong>Atenção (5,00 a 6,99)</strong>
+                                <p id="legenda-atencao">1 disciplina (20%)</p>
+                            </div>
+                        </div>
+                        <div class="legenda-item">
+                            <span class="dot vermelho"></span>
+                            <div>
+                                <strong>Abaixo da média (< 7,00)</strong>
+                                <p id="legenda-abaixo">2 disciplinas (40%)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="meta-box">
+                    <div class="meta-icone">🎯</div>
+                    <div>
+                        <h4>META SUGERIDA</h4>
+                        <p>Manter 100% das disciplinas acima da média no próximo semestre.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- GRÁFICOS INFERIORES -->
+        <section class="graficos-inferiores">
+            <!-- Gráfico de Barras -->
+            <div class="card grafico-barras-card">
+                <!-- Removido o style inline do span para herdar a fonte do H3 -->
+                <h3>MÉDIA FINAL POR DISCIPLINA <span id="titulo-media-barras"></span></h3>
+                <div class="barras-container">
+                    <canvas id="graficoBarras"></canvas>
+                </div>
+            </div>
+
+            <!-- Gráfico de Evolução -->
+            <div class="card grafico-evolucao-card">
+                <h3>EVOLUÇÃO DAS NOTAS (G1)</h3>
+                <div class="evolucao-container">
+                    <canvas id="graficoEvolucao"></canvas>
+                </div>
+                <div id="legenda-evolucao" class="legenda-evolucao-custom">
+                    <!-- A legenda será preenchida via JS -->
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script src="dados.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
