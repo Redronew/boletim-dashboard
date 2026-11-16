@@ -43,6 +43,7 @@ body {
     align-items: center;
     margin-bottom: 20px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    overflow: hidden; /* IMPEDE QUE OS ELEMENTOS VAZEM PARA FORA DO CABEÇALHO */
 }
 
 .header-esquerda {
@@ -50,6 +51,7 @@ body {
     flex-direction: column;
     justify-content: center;
     flex: 1;
+    min-width: 250px; /* Garante um tamanho mínimo para o título não quebrar */
 }
 
 .header h1 {
@@ -109,7 +111,7 @@ body {
     display: flex;
     gap: 25px;
     align-items: center;
-    flex-shrink: 0;
+    flex-shrink: 1; /* Permite que as métricas encolham se faltar espaço */
 }
 
 .metrica {
@@ -141,9 +143,9 @@ body {
     background-color: rgba(255, 255, 255, 0.1);
     padding: 15px;
     border-radius: 8px;
-    max-width: 300px;
+    max-width: 280px; /* Reduzido um pouco */
     margin-left: 20px;
-    flex-shrink: 0;
+    flex-shrink: 1; /* IMPORTANTE: Permite que a caixa diminua de tamanho se precisar */
 }
 
 .destaque h3 {
@@ -155,10 +157,11 @@ body {
 .destaque p {
     font-size: 12px;
     line-height: 1.4;
+    white-space: normal; /* Permite que o texto quebre em várias linhas */
 }
 
 .destaque .alerta {
-    color: #cbd5e0; /* Alterado de vermelho para cinza claro */
+    color: #cbd5e0; 
     margin-top: 5px;
 }
 
@@ -205,7 +208,6 @@ td {
     color: var(--text-main);
 }
 
-/* Classes de Status da Tabela */
 .status-acima {
     background-color: #c6f6d5; 
     color: #22543d;
@@ -222,10 +224,9 @@ td {
     text-align: center;
 }
 
-/* Nova classe no lugar do vermelho */
 .status-critico {
-    background-color: #e2e8f0; /* Cinza claro */
-    color: #2d3748; /* Texto cinza escuro */
+    background-color: #e2e8f0; 
+    color: #2d3748; 
     font-weight: bold;
     border-radius: 4px;
     text-align: center;
@@ -292,7 +293,6 @@ td {
     margin-top: 4px;
 }
 
-/* Novas cores dos dots */
 .dot.verde { background-color: #2ca02c; }
 .dot.amarelo { background-color: #eab308; }
 .dot.cinza { background-color: #718096; }
