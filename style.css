@@ -53,14 +53,14 @@ body {
     background-color: #0c1b33;
     color: white;
     border-radius: 12px;
-    padding: 20px;
-    padding-right: 80px; /* Espaço para o botão não sobrepor o texto */
+    padding: 25px;
+    padding-right: 80px; 
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-    position: relative; /* Necessário para ancorar o botão */
+    position: relative; 
 }
 
 .header-esquerda {
@@ -71,28 +71,30 @@ body {
 }
 
 .header h1 {
-    font-size: 24px;
+    font-size: 22px; /* Reduzi um pouco para caber em uma linha */
     letter-spacing: 1px;
+    white-space: nowrap; /* Impede a quebra de linha do título */
 }
 
 .subtitulo-curso {
-    color: #cbd5e0;
-    font-size: 12px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    font-weight: 500;
-    letter-spacing: 0.5px;
+    color: #a0aec0; /* Cinza mais claro */
+    font-size: 13px;
+    margin-top: 8px;
+    font-style: italic;
+    font-weight: 400;
 }
 
 .subtitulo {
     color: #00d2ff;
     font-weight: bold;
-    margin-top: 5px;
+    font-size: 16px;
+    margin-top: 12px;
+    margin-bottom: 5px;
 }
 
 /* Botões de Semestre */
 .botoes-semestre {
-    margin-top: 15px;
+    margin-top: 10px;
     display: flex;
     gap: 10px;
 }
@@ -178,7 +180,7 @@ body {
     margin-top: 5px;
 }
 
-/* Botão Theme Toggle (Posicionado Absoluto no Canto) */
+/* Botão Theme Toggle */
 .theme-toggle {
     position: absolute;
     top: 20px;
