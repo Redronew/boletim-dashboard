@@ -53,14 +53,15 @@
                 <p id="alerta-texto" class="alerta">Atenção às disciplinas de Fundamentos e Tópicos Especiais.</p>
             </div>
 
-            <!-- SWITCH DE TEMA -->
-            <label class="theme-switch" title="Alternar Tema">
-                <input type="checkbox" id="theme-checkbox" onchange="toggleTheme()">
-                <span class="slider">
-                    <span class="icon sun">☀️</span>
-                    <span class="icon moon">🌙</span>
-                </span>
-            </label>
+            <!-- BOTÕES DE TEMA (Empilhados verticalmente) -->
+            <div class="theme-buttons-container">
+                <button class="theme-btn" onclick="setTheme('light')" title="Tema Claro">
+                    ☀️
+                </button>
+                <button class="theme-btn" onclick="setTheme('dark')" title="Tema Escuro">
+                    🌙
+                </button>
+            </div>
         </header>
 
         <!-- TABELA E ROSCA -->
