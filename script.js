@@ -2,17 +2,17 @@ let chartRosca, chartBarras, chartEvolucao;
 
 const coresEvolucao = ['#2ca02c', '#40c057', '#1f77b4', '#f6ad55', '#d62728'];
 
-// --- FUNÇÃO DE TROCA DE TEMA ---
+// --- FUNÇÃO DE TROCA DE TEMA (Ajustada para o Checkbox) ---
 function toggleTheme() {
     const body = document.body;
-    const btn = document.getElementById('theme-toggle');
+    const isDark = document.getElementById('theme-checkbox').checked;
     
-    body.classList.toggle('dark-theme');
-    
-    if (body.classList.contains('dark-theme')) {
-        btn.innerText = '☀️';
+    if (isDark) {
+        body.classList.add('dark-theme');
+        localStorage.setItem('theme', 'dark');
     } else {
-        btn.innerText = '🌙';
+        body.classList.remove('dark-theme');
+        localStorage.setItem('theme', 'light');
     }
     
     atualizarCoresGraficos();
@@ -115,7 +115,7 @@ function renderizarDashboard(dadosAcademicos, semestreTexto, btnClicado) {
     document.getElementById('abaixo-topo').innerText = abaixo;
     document.querySelector('#texto-semestre').innerText = semestreTexto;
     
-    // Atualiza o título do gráfico de barras com a média (mesma fonte e cor)
+    // Atualiza o título do gráfico de barras com a média
     const semestreAbreviado = semestreTexto.includes('1') ? '1º SEM' : '2º SEM';
     document.getElementById('titulo-media-barras').innerText = `| MÉDIA DO ${semestreAbreviado}: ${mediaGeral}`;
 
@@ -166,7 +166,6 @@ function renderizarDashboard(dadosAcademicos, semestreTexto, btnClicado) {
     if (chartBarras) chartBarras.destroy();
     const ctxBarras = document.getElementById('graficoBarras').getContext('2d');
     
-    // Plugin: Apenas desenha a linha tracejada, sem o texto
     const linhaMediaPlugin = {
         id: 'linhaMedia',
         afterDraw: (chart) => {
@@ -259,9 +258,11 @@ function renderizarDashboard(dadosAcademicos, semestreTexto, btnClicado) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    renderizarDashboard(dadosSemestre2, "SEMESTRE 2 - 2026/2");
-    
+    // Verifica se o tema escuro já estava salvo antes de renderizar
     if (localStorage.getItem('theme') === 'dark') {
-        toggleTheme();
+        document.getElementById('theme-checkbox').checked = true;
+        document.body.classList.add('dark-theme');
     }
+
+    renderizarDashboard(dadosSemestre2, "SEMESTRE 2 - 2026/2");
 });

@@ -53,10 +53,14 @@
                 <p id="alerta-texto" class="alerta">Atenção às disciplinas de Fundamentos e Tópicos Especiais.</p>
             </div>
 
-            <!-- BOTÃO DE TEMA AQUI, COMO ÚLTIMO ITEM DO HEADER -->
-            <button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" title="Alternar Tema">
-                🌙
-            </button>
+            <!-- TOGGLE SWITCH DE TEMA -->
+            <label class="theme-switch" title="Alternar Tema">
+                <input type="checkbox" id="theme-checkbox" onchange="toggleTheme()">
+                <span class="slider">
+                    <span class="icon sun">☀️</span>
+                    <span class="icon moon">🌙</span>
+                </span>
+            </label>
         </header>
 
         <!-- TABELA E ROSCA -->
