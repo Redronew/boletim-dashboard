@@ -2,51 +2,14 @@ let chartRosca, chartBarras, chartEvolucao;
 
 const coresEvolucao = ['#2ca02c', '#40c057', '#1f77b4', '#f6ad55', '#d62728'];
 
-// --- FUNÇÃO DE TROCA DE TEMA ---
-function toggleTheme() {
-    const body = document.body;
-    const isDark = document.getElementById('theme-checkbox').checked;
-    
-    if (isDark) {
-        body.classList.add('dark-theme');
-        localStorage.setItem('theme', 'dark');
-    } else {
-        body.classList.remove('dark-theme');
-        localStorage.setItem('theme', 'light');
-    }
-    
-    atualizarCoresGraficos();
-}
-
-function atualizarCoresGraficos() {
-    const isDark = document.body.classList.contains('dark-theme');
-    const corTexto = isDark ? '#cbd5e0' : '#4a5568';
-    const corGrid = isDark ? '#4a5568' : '#edf2f7';
-
-    if (chartBarras) {
-        chartBarras.options.scales.x.ticks.color = corTexto;
-        chartBarras.options.scales.y.ticks.color = corTexto;
-        chartBarras.options.scales.y.grid.color = corGrid;
-        chartBarras.update();
-    }
-
-    if (chartEvolucao) {
-        chartEvolucao.options.scales.x.ticks.color = corTexto;
-        chartEvolucao.options.scales.y.ticks.color = corTexto;
-        chartEvolucao.options.scales.y.grid.color = corGrid;
-        chartEvolucao.update();
-    }
-}
-
 // Plugin: Valores em cima das barras
 const valoresEmCimaPlugin = {
     id: 'valoresEmCima',
     afterDatasetsDraw(chart) {
         const { ctx, data } = chart;
-        const isDark = document.body.classList.contains('dark-theme');
         ctx.save();
         ctx.font = 'bold 12px sans-serif';
-        ctx.fillStyle = isDark ? '#f7fafc' : '#333';
+        ctx.fillStyle = '#f7fafc'; // Cor clara fixa para o tema escuro
         ctx.textAlign = 'center';
         chart.getDatasetMeta(0).data.forEach((bar, index) => {
             const valor = data.datasets[0].data[index];
@@ -82,7 +45,6 @@ function calcularMediaGlobal() {
     return (soma / todasAsNotas.length).toFixed(2);
 }
 
-// --- FUNÇÃO: Atualiza o texto de destaque dinamicamente ---
 function atualizarTextoDestaque(dados) {
     const melhorDisciplina = dados.reduce((prev, current) => (prev.media > current.media) ? prev : current);
     const pioresDisciplinas = dados.filter(d => d.media < 7.0);
@@ -115,7 +77,6 @@ function renderizarDashboard(dadosAcademicos, semestreTexto, btnClicado) {
     document.getElementById('abaixo-topo').innerText = abaixo;
     document.querySelector('#texto-semestre').innerText = semestreTexto;
     
-    // Atualiza o título do gráfico de barras com a média
     const semestreAbreviado = semestreTexto.includes('1') ? '1º SEM' : '2º SEM';
     document.getElementById('titulo-media-barras').innerText = `| MÉDIA DO ${semestreAbreviado}: ${mediaGeral}`;
 
@@ -131,7 +92,6 @@ function renderizarDashboard(dadosAcademicos, semestreTexto, btnClicado) {
         btnClicado.classList.add('ativo');
     }
 
-    // Tabela
     const tbody = document.querySelector('#tabela-notas tbody');
     tbody.innerHTML = ''; 
     dadosAcademicos.forEach(item => {
@@ -146,11 +106,10 @@ function renderizarDashboard(dadosAcademicos, semestreTexto, btnClicado) {
         tbody.appendChild(tr);
     });
 
-    const isDark = document.body.classList.contains('dark-theme');
-    const corTexto = isDark ? '#cbd5e0' : '#4a5568';
-    const corGrid = isDark ? '#4a5568' : '#edf2f7';
+    // Cores fixas para o tema escuro
+    const corTexto = '#cbd5e0';
+    const corGrid = '#4a5568';
 
-    // Rosca
     if (chartRosca) chartRosca.destroy(); 
     const ctxRosca = document.getElementById('graficoRosca').getContext('2d');
     chartRosca = new Chart(ctxRosca, {
@@ -162,7 +121,6 @@ function renderizarDashboard(dadosAcademicos, semestreTexto, btnClicado) {
         options: { cutout: '75%', plugins: { legend: { display: false } } }
     });
 
-    // Barras
     if (chartBarras) chartBarras.destroy();
     const ctxBarras = document.getElementById('graficoBarras').getContext('2d');
     
@@ -208,7 +166,6 @@ function renderizarDashboard(dadosAcademicos, semestreTexto, btnClicado) {
         }
     });
 
-    // Evolução
     if (chartEvolucao) chartEvolucao.destroy();
     const ctxEvolucao = document.getElementById('graficoEvolucao').getContext('2d');
     
@@ -243,7 +200,6 @@ function renderizarDashboard(dadosAcademicos, semestreTexto, btnClicado) {
         }
     });
 
-    // Legenda Evolução
     const legendaContainer = document.getElementById('legenda-evolucao');
     legendaContainer.innerHTML = '';
     dadosAcademicos.forEach((d, index) => {
@@ -257,12 +213,7 @@ function renderizarDashboard(dadosAcademicos, semestreTexto, btnClicado) {
     });
 }
 
+// Inicializa o dashboard direto no carregamento
 document.addEventListener('DOMContentLoaded', () => {
-    // Verifica se o tema escuro já estava salvo
-    if (localStorage.getItem('theme') === 'dark') {
-        document.getElementById('theme-checkbox').checked = true;
-        document.body.classList.add('dark-theme');
-    }
-
     renderizarDashboard(dadosSemestre2, "SEMESTRE 2 - 2026/2");
 });
