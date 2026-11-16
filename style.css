@@ -158,7 +158,7 @@ body {
 }
 
 .destaque .alerta {
-    color: #fc8181;
+    color: #cbd5e0; /* Alterado de vermelho para cinza claro */
     margin-top: 5px;
 }
 
@@ -207,7 +207,7 @@ td {
 
 /* Classes de Status da Tabela */
 .status-acima {
-    background-color: #c6f6d5;
+    background-color: #c6f6d5; 
     color: #22543d;
     font-weight: bold;
     border-radius: 4px;
@@ -215,16 +215,17 @@ td {
 }
 
 .status-atencao {
-    background-color: #fefcbf; /* Fundo amarelo claro */
-    color: #744210; /* Texto marrom escuro */
+    background-color: #fefcbf; 
+    color: #744210; 
     font-weight: bold;
     border-radius: 4px;
     text-align: center;
 }
 
-.status-abaixo {
-    background-color: #fed7d7;
-    color: #742a2a;
+/* Nova classe no lugar do vermelho */
+.status-critico {
+    background-color: #e2e8f0; /* Cinza claro */
+    color: #2d3748; /* Texto cinza escuro */
     font-weight: bold;
     border-radius: 4px;
     text-align: center;
@@ -291,9 +292,10 @@ td {
     margin-top: 4px;
 }
 
+/* Novas cores dos dots */
 .dot.verde { background-color: #2ca02c; }
-.dot.amarelo { background-color: #f6ad55; }
-.dot.vermelho { background-color: #d62728; }
+.dot.amarelo { background-color: #eab308; }
+.dot.cinza { background-color: #718096; }
 
 .legenda-item strong {
     font-size: 11px;

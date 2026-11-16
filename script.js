@@ -47,7 +47,6 @@ function calcularMediaGlobal() {
 
 function atualizarTextoDestaque(dados) {
     const melhorDisciplina = dados.reduce((prev, current) => (prev.media > current.media) ? prev : current);
-    // O alerta agora foca em disciplinas abaixo de 8.0
     const disciplinasAtencao = dados.filter(d => d.media < 8.0);
     
     const destaqueP = document.getElementById('destaque-texto');
@@ -78,9 +77,7 @@ function renderizarDashboard(dadosAcademicos, semestreTexto, btnClicado) {
 
     document.getElementById('media-geral-topo').innerText = mediaGeral;
     document.getElementById('acima-topo').innerText = acima;
-    // O card do topo que era "Abaixo da Média" agora mostra a soma de atenção + abaixo? 
-    // Vou manter mostrando o total de disciplinas com nota < 8.0 para dar um panorama de "o que melhorar"
-    document.getElementById('abaixo-topo').innerText = atencao + abaixo; 
+    document.getElementById('abaixo-topo').innerText = atencao + abaixo; // Soma os que não estão no topo
     document.querySelector('#texto-semestre').innerText = semestreTexto;
     
     const semestreAbreviado = semestreTexto.includes('1') ? '1º SEM' : '2º SEM';
@@ -104,17 +101,16 @@ function renderizarDashboard(dadosAcademicos, semestreTexto, btnClicado) {
     dadosAcademicos.forEach(item => {
         const tr = document.createElement('tr');
         
-        // Lógica de cores e textos da tabela baseada nas novas regras
         let statusClass, statusTexto;
         if (item.media >= 8.0) {
             statusClass = 'status-acima';
-            statusTexto = 'Acima da Média';
+            statusTexto = 'Superior';
         } else if (item.media >= 6.0) {
-            statusClass = 'status-atencao'; // Nova classe CSS que precisamos adicionar
-            statusTexto = 'Atenção';
+            statusClass = 'status-atencao';
+            statusTexto = 'Intermediário';
         } else {
-            statusClass = 'status-abaixo';
-            statusTexto = 'Abaixo da Média';
+            statusClass = 'status-critico';
+            statusTexto = 'Crítico';
         }
 
         tr.innerHTML = `
@@ -134,10 +130,10 @@ function renderizarDashboard(dadosAcademicos, semestreTexto, btnClicado) {
     chartRosca = new Chart(ctxRosca, {
         type: 'doughnut',
         data: {
-            labels: ['Acima', 'Atenção', 'Abaixo'],
+            labels: ['Superior', 'Intermediária', 'Crítica'],
             datasets: [{ 
                 data: [acima, atencao, abaixo], 
-                backgroundColor: ['#2ca02c', '#f6ad55', '#d62728'], // Verde, Amarelo, Vermelho
+                backgroundColor: ['#2ca02c', '#eab308', '#718096'], // Verde, Amarelo Ouro, Cinza
                 borderWidth: 0 
             }]
         },
@@ -172,11 +168,10 @@ function renderizarDashboard(dadosAcademicos, semestreTexto, btnClicado) {
             labels: dadosAcademicos.map(d => d.disciplina),
             datasets: [{
                 data: dadosAcademicos.map(d => d.media),
-                // Lógica de cores das barras
                 backgroundColor: dadosAcademicos.map(d => {
                     if (d.media >= 8.0) return '#2ca02c'; // Verde
-                    if (d.media >= 6.0) return '#f6ad55'; // Amarelo
-                    return '#d62728'; // Vermelho
+                    if (d.media >= 6.0) return '#eab308'; // Amarelo
+                    return '#718096'; // Cinza
                 }),
                 borderRadius: 4,
                 barPercentage: 0.6
