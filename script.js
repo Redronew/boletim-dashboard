@@ -2,7 +2,7 @@ let chartRosca, chartBarras, chartEvolucao;
 
 const coresEvolucao = ['#2ca02c', '#40c057', '#1f77b4', '#f6ad55', '#d62728'];
 
-// --- FUNÇÃO DE TROCA DE TEMA (Ajustada para o Checkbox) ---
+// --- FUNÇÃO DE TROCA DE TEMA ---
 function toggleTheme() {
     const body = document.body;
     const isDark = document.getElementById('theme-checkbox').checked;
@@ -258,7 +258,7 @@ function renderizarDashboard(dadosAcademicos, semestreTexto, btnClicado) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Verifica se o tema escuro já estava salvo antes de renderizar
+    // Verifica se o tema escuro já estava salvo
     if (localStorage.getItem('theme') === 'dark') {
         document.getElementById('theme-checkbox').checked = true;
         document.body.classList.add('dark-theme');
