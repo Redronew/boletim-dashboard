@@ -4,13 +4,13 @@ Este é um projeto de dashboard interativo para visualização do meu desempenho
 
 ## 🚀 Tecnologias Utilizadas
 *   **HTML5** (Estrutura)
-*   **CSS3** (Estilização, variáveis para Dark/Light Mode e responsividade)
+*   **CSS3** (Estilização, layout responsivo e tema escuro fixo)
 *   **JavaScript** (Lógica de manipulação de dados e interatividade)
 *   **Chart.js** (Biblioteca para a criação dos gráficos de rosca, barras e evolução)
 *   **Python (Streamlit)** (Versão inicial do projeto para análise exploratória dos dados)
 
 ## ✨ Funcionalidades
-*   **Alternância de Temas:** Botão para alternar entre os modos Claro e Escuro.
+*   **Tema Escuro:** Design moderno focado em melhor legibilidade e conforto visual.
 *   **Filtro por Semestre:** Visualização dos dados do 1º e 2º semestre separadamente.
 *   **Gráfico de Distribuição:** Rosca mostrando quantas disciplinas estão acima/abaixo da média.
 *   **Gráfico de Barras:** Notas finais por disciplina com linha indicativa da média do semestre.
