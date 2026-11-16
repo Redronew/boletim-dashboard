@@ -9,7 +9,7 @@ const valoresEmCimaPlugin = {
         const { ctx, data } = chart;
         ctx.save();
         ctx.font = 'bold 12px sans-serif';
-        ctx.fillStyle = '#f7fafc'; // Cor clara fixa para o tema escuro
+        ctx.fillStyle = '#f7fafc';
         ctx.textAlign = 'center';
         chart.getDatasetMeta(0).data.forEach((bar, index) => {
             const valor = data.datasets[0].data[index];
@@ -47,16 +47,17 @@ function calcularMediaGlobal() {
 
 function atualizarTextoDestaque(dados) {
     const melhorDisciplina = dados.reduce((prev, current) => (prev.media > current.media) ? prev : current);
-    const pioresDisciplinas = dados.filter(d => d.media < 7.0);
+    // O alerta agora foca em disciplinas abaixo de 8.0
+    const disciplinasAtencao = dados.filter(d => d.media < 8.0);
     
     const destaqueP = document.getElementById('destaque-texto');
     const alertaP = document.getElementById('alerta-texto');
     
     destaqueP.innerHTML = `Melhores resultados em <strong>${melhorDisciplina.disciplina}</strong>.`;
     
-    if (pioresDisciplinas.length > 0) {
-        const nomesPiores = pioresDisciplinas.map(d => d.disciplina).join(' e ');
-        alertaP.innerHTML = `Atenção às disciplinas de <strong>${nomesPiores}</strong>.`;
+    if (disciplinasAtencao.length > 0) {
+        const nomes = disciplinasAtencao.map(d => d.disciplina).join(' e ');
+        alertaP.innerHTML = `Atenção às disciplinas: <strong>${nomes}</strong>.`;
         alertaP.style.display = 'block';
     } else {
         alertaP.style.display = 'none';
@@ -67,14 +68,19 @@ function renderizarDashboard(dadosAcademicos, semestreTexto, btnClicado) {
     document.getElementById('media-global-topo').innerText = calcularMediaGlobal();
 
     const mediaGeral = (dadosAcademicos.reduce((acc, item) => acc + item.media, 0) / dadosAcademicos.length).toFixed(2);
-    const acima = dadosAcademicos.filter(d => d.media >= 7.0).length;
-    const atencao = dadosAcademicos.filter(d => d.media >= 5.0 && d.media < 7.0).length;
-    const abaixo = dadosAcademicos.filter(d => d.media < 7.0).length; 
+    
+    // --- NOVAS REGRAS DE CLASSIFICAÇÃO ---
+    const acima = dadosAcademicos.filter(d => d.media >= 8.0).length;
+    const atencao = dadosAcademicos.filter(d => d.media >= 6.0 && d.media < 8.0).length;
+    const abaixo = dadosAcademicos.filter(d => d.media < 6.0).length; 
+    
     const total = dadosAcademicos.length;
 
     document.getElementById('media-geral-topo').innerText = mediaGeral;
     document.getElementById('acima-topo').innerText = acima;
-    document.getElementById('abaixo-topo').innerText = abaixo;
+    // O card do topo que era "Abaixo da Média" agora mostra a soma de atenção + abaixo? 
+    // Vou manter mostrando o total de disciplinas com nota < 8.0 para dar um panorama de "o que melhorar"
+    document.getElementById('abaixo-topo').innerText = atencao + abaixo; 
     document.querySelector('#texto-semestre').innerText = semestreTexto;
     
     const semestreAbreviado = semestreTexto.includes('1') ? '1º SEM' : '2º SEM';
@@ -92,12 +98,25 @@ function renderizarDashboard(dadosAcademicos, semestreTexto, btnClicado) {
         btnClicado.classList.add('ativo');
     }
 
+    // Tabela
     const tbody = document.querySelector('#tabela-notas tbody');
     tbody.innerHTML = ''; 
     dadosAcademicos.forEach(item => {
         const tr = document.createElement('tr');
-        const statusClass = item.media >= 7.0 ? 'status-acima' : 'status-abaixo';
-        const statusTexto = item.media >= 7.0 ? 'Acima da Média' : 'Abaixo da Média';
+        
+        // Lógica de cores e textos da tabela baseada nas novas regras
+        let statusClass, statusTexto;
+        if (item.media >= 8.0) {
+            statusClass = 'status-acima';
+            statusTexto = 'Acima da Média';
+        } else if (item.media >= 6.0) {
+            statusClass = 'status-atencao'; // Nova classe CSS que precisamos adicionar
+            statusTexto = 'Atenção';
+        } else {
+            statusClass = 'status-abaixo';
+            statusTexto = 'Abaixo da Média';
+        }
+
         tr.innerHTML = `
             <td>${item.disciplina}</td>
             <td style="text-align: center; font-weight: bold;">${item.media.toFixed(2)}</td>
@@ -106,21 +125,26 @@ function renderizarDashboard(dadosAcademicos, semestreTexto, btnClicado) {
         tbody.appendChild(tr);
     });
 
-    // Cores fixas para o tema escuro
     const corTexto = '#cbd5e0';
     const corGrid = '#4a5568';
 
+    // Rosca
     if (chartRosca) chartRosca.destroy(); 
     const ctxRosca = document.getElementById('graficoRosca').getContext('2d');
     chartRosca = new Chart(ctxRosca, {
         type: 'doughnut',
         data: {
             labels: ['Acima', 'Atenção', 'Abaixo'],
-            datasets: [{ data: [acima, atencao, abaixo], backgroundColor: ['#2ca02c', '#f6ad55', '#d62728'], borderWidth: 0 }]
+            datasets: [{ 
+                data: [acima, atencao, abaixo], 
+                backgroundColor: ['#2ca02c', '#f6ad55', '#d62728'], // Verde, Amarelo, Vermelho
+                borderWidth: 0 
+            }]
         },
         options: { cutout: '75%', plugins: { legend: { display: false } } }
     });
 
+    // Barras
     if (chartBarras) chartBarras.destroy();
     const ctxBarras = document.getElementById('graficoBarras').getContext('2d');
     
@@ -148,7 +172,12 @@ function renderizarDashboard(dadosAcademicos, semestreTexto, btnClicado) {
             labels: dadosAcademicos.map(d => d.disciplina),
             datasets: [{
                 data: dadosAcademicos.map(d => d.media),
-                backgroundColor: dadosAcademicos.map(d => d.media >= 7.0 ? '#2ca02c' : '#d62728'),
+                // Lógica de cores das barras
+                backgroundColor: dadosAcademicos.map(d => {
+                    if (d.media >= 8.0) return '#2ca02c'; // Verde
+                    if (d.media >= 6.0) return '#f6ad55'; // Amarelo
+                    return '#d62728'; // Vermelho
+                }),
                 borderRadius: 4,
                 barPercentage: 0.6
             }]
@@ -166,6 +195,7 @@ function renderizarDashboard(dadosAcademicos, semestreTexto, btnClicado) {
         }
     });
 
+    // Evolução
     if (chartEvolucao) chartEvolucao.destroy();
     const ctxEvolucao = document.getElementById('graficoEvolucao').getContext('2d');
     
@@ -213,7 +243,6 @@ function renderizarDashboard(dadosAcademicos, semestreTexto, btnClicado) {
     });
 }
 
-// Inicializa o dashboard direto no carregamento
 document.addEventListener('DOMContentLoaded', () => {
     renderizarDashboard(dadosSemestre2, "SEMESTRE 2 - 2026/2");
 });

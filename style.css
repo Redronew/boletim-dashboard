@@ -205,9 +205,18 @@ td {
     color: var(--text-main);
 }
 
+/* Classes de Status da Tabela */
 .status-acima {
     background-color: #c6f6d5;
     color: #22543d;
+    font-weight: bold;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.status-atencao {
+    background-color: #fefcbf; /* Fundo amarelo claro */
+    color: #744210; /* Texto marrom escuro */
     font-weight: bold;
     border-radius: 4px;
     text-align: center;
