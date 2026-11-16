@@ -43,7 +43,6 @@ body {
     align-items: center;
     margin-bottom: 20px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-    overflow: hidden; /* IMPEDE QUE OS ELEMENTOS VAZEM PARA FORA DO CABEÇALHO */
 }
 
 .header-esquerda {
@@ -51,7 +50,7 @@ body {
     flex-direction: column;
     justify-content: center;
     flex: 1;
-    min-width: 250px; /* Garante um tamanho mínimo para o título não quebrar */
+    min-width: 250px;
 }
 
 .header h1 {
@@ -111,7 +110,7 @@ body {
     display: flex;
     gap: 25px;
     align-items: center;
-    flex-shrink: 1; /* Permite que as métricas encolham se faltar espaço */
+    flex-shrink: 0;
 }
 
 .metrica {
@@ -143,9 +142,9 @@ body {
     background-color: rgba(255, 255, 255, 0.1);
     padding: 15px;
     border-radius: 8px;
-    max-width: 280px; /* Reduzido um pouco */
+    max-width: 280px;
     margin-left: 20px;
-    flex-shrink: 1; /* IMPORTANTE: Permite que a caixa diminua de tamanho se precisar */
+    flex-shrink: 1;
 }
 
 .destaque h3 {
@@ -157,7 +156,7 @@ body {
 .destaque p {
     font-size: 12px;
     line-height: 1.4;
-    white-space: normal; /* Permite que o texto quebre em várias linhas */
+    white-space: normal;
 }
 
 .destaque .alerta {
@@ -393,4 +392,76 @@ td {
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: inherit;
+}
+
+/* ========================================= */
+/* --- RESPONSIVIDADE PARA TABLETS E CELULARES --- */
+/* ========================================= */
+
+/* Tablets e telas médias (até 1024px) */
+@media (max-width: 1024px) {
+    .header {
+        flex-direction: column; /* Empilha o cabeçalho */
+        align-items: flex-start;
+        gap: 20px;
+    }
+    
+    .metricas-topo {
+        flex-wrap: wrap; /* Permite que as métricas quebrem de linha */
+        gap: 15px;
+        width: 100%;
+    }
+
+    .destaque {
+        margin-left: 0;
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .conteudo-principal, .graficos-inferiores {
+        grid-template-columns: 1fr; /* Coloca os gráficos um embaixo do outro */
+    }
+}
+
+/* Celulares (até 768px) */
+@media (max-width: 768px) {
+    body {
+        padding: 10px; /* Diminui a margem da tela */
+    }
+
+    .header h1 {
+        font-size: 18px;
+        white-space: normal; /* Permite quebrar o título em telas muito pequenas */
+    }
+
+    .metricas-topo {
+        flex-direction: column; /* Empilha as métricas no celular */
+        align-items: flex-start;
+    }
+
+    .destaque-global {
+        border-right: none; /* Tira a linha divisória no celular */
+        padding-right: 0;
+        border-bottom: 1px solid #2d3748;
+        padding-bottom: 10px;
+        width: 100%;
+    }
+
+    .rosca-conteudo {
+        flex-direction: column; /* Coloca a rosca em cima e a legenda embaixo */
+    }
+
+    .grafico-container {
+        width: 200px; /* Aumenta um pouco a rosca no celular */
+        height: 200px;
+        margin-bottom: 15px;
+    }
+
+    .legenda-customizada {
+        width: 100%;
+    }
+
+    .botoes-semestre {
+        flex-wrap: wrap;
+    }
 }
