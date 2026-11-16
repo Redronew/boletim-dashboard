@@ -68,21 +68,25 @@ function renderizarDashboard(dadosAcademicos, semestreTexto, btnClicado) {
 
     const mediaGeral = (dadosAcademicos.reduce((acc, item) => acc + item.media, 0) / dadosAcademicos.length).toFixed(2);
     
-    // --- NOVAS REGRAS DE CLASSIFICAÇÃO ---
+    // Lógica matemática correta para as 3 faixas
     const acima = dadosAcademicos.filter(d => d.media >= 8.0).length;
     const atencao = dadosAcademicos.filter(d => d.media >= 6.0 && d.media < 8.0).length;
     const abaixo = dadosAcademicos.filter(d => d.media < 6.0).length; 
     
     const total = dadosAcademicos.length;
 
+    // Atualizando os Cards do topo
     document.getElementById('media-geral-topo').innerText = mediaGeral;
     document.getElementById('acima-topo').innerText = acima;
-    document.getElementById('abaixo-topo').innerText = atencao + abaixo; // Soma os que não estão no topo
+    document.getElementById('atencao-topo').innerText = atencao;
+    document.getElementById('abaixo-topo').innerText = abaixo;
     document.querySelector('#texto-semestre').innerText = semestreTexto;
     
+    // Título do gráfico de barras
     const semestreAbreviado = semestreTexto.includes('1') ? '1º SEM' : '2º SEM';
     document.getElementById('titulo-media-barras').innerText = `| MÉDIA DO ${semestreAbreviado}: ${mediaGeral}`;
 
+    // Atualizando a Rosca e Legenda
     document.getElementById('total-disciplinas').innerText = total;
     document.getElementById('legenda-acima').innerText = `${acima} disciplinas (${Math.round((acima/total)*100)}%)`;
     document.getElementById('legenda-atencao').innerText = `${atencao} disciplinas (${Math.round((atencao/total)*100)}%)`;
@@ -95,7 +99,7 @@ function renderizarDashboard(dadosAcademicos, semestreTexto, btnClicado) {
         btnClicado.classList.add('ativo');
     }
 
-    // Tabela
+    // Preenchendo a Tabela
     const tbody = document.querySelector('#tabela-notas tbody');
     tbody.innerHTML = ''; 
     dadosAcademicos.forEach(item => {
@@ -124,7 +128,7 @@ function renderizarDashboard(dadosAcademicos, semestreTexto, btnClicado) {
     const corTexto = '#cbd5e0';
     const corGrid = '#4a5568';
 
-    // Rosca
+    // Gráfico de Rosca
     if (chartRosca) chartRosca.destroy(); 
     const ctxRosca = document.getElementById('graficoRosca').getContext('2d');
     chartRosca = new Chart(ctxRosca, {
@@ -133,14 +137,14 @@ function renderizarDashboard(dadosAcademicos, semestreTexto, btnClicado) {
             labels: ['Superior', 'Intermediária', 'Crítica'],
             datasets: [{ 
                 data: [acima, atencao, abaixo], 
-                backgroundColor: ['#2ca02c', '#eab308', '#718096'], // Verde, Amarelo Ouro, Cinza
+                backgroundColor: ['#2ca02c', '#eab308', '#718096'], // Verde, Amarelo, Cinza
                 borderWidth: 0 
             }]
         },
         options: { cutout: '75%', plugins: { legend: { display: false } } }
     });
 
-    // Barras
+    // Gráfico de Barras
     if (chartBarras) chartBarras.destroy();
     const ctxBarras = document.getElementById('graficoBarras').getContext('2d');
     
@@ -168,6 +172,7 @@ function renderizarDashboard(dadosAcademicos, semestreTexto, btnClicado) {
             labels: dadosAcademicos.map(d => d.disciplina),
             datasets: [{
                 data: dadosAcademicos.map(d => d.media),
+                // Cores individuais de cada barra baseada na nota
                 backgroundColor: dadosAcademicos.map(d => {
                     if (d.media >= 8.0) return '#2ca02c'; // Verde
                     if (d.media >= 6.0) return '#eab308'; // Amarelo
@@ -190,7 +195,7 @@ function renderizarDashboard(dadosAcademicos, semestreTexto, btnClicado) {
         }
     });
 
-    // Evolução
+    // Gráfico de Evolução
     if (chartEvolucao) chartEvolucao.destroy();
     const ctxEvolucao = document.getElementById('graficoEvolucao').getContext('2d');
     
@@ -225,6 +230,7 @@ function renderizarDashboard(dadosAcademicos, semestreTexto, btnClicado) {
         }
     });
 
+    // Legenda Evolução
     const legendaContainer = document.getElementById('legenda-evolucao');
     legendaContainer.innerHTML = '';
     dadosAcademicos.forEach((d, index) => {
