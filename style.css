@@ -54,6 +54,7 @@ body {
     color: white;
     border-radius: 12px;
     padding: 25px;
+    /* AQUI: Aumentei o padding direito para 80px para abrir espaço para o botão */
     padding-right: 80px; 
     display: flex;
     justify-content: space-between;
@@ -71,13 +72,13 @@ body {
 }
 
 .header h1 {
-    font-size: 22px; /* Reduzi um pouco para caber em uma linha */
+    font-size: 22px; 
     letter-spacing: 1px;
-    white-space: nowrap; /* Impede a quebra de linha do título */
+    white-space: nowrap; 
 }
 
 .subtitulo-curso {
-    color: #a0aec0; /* Cinza mais claro */
+    color: #a0aec0; 
     font-size: 13px;
     margin-top: 8px;
     font-style: italic;
@@ -180,7 +181,7 @@ body {
     margin-top: 5px;
 }
 
-/* Botão Theme Toggle */
+/* Botão Theme Toggle (Posicionado Absoluto no Canto) */
 .theme-toggle {
     position: absolute;
     top: 20px;
@@ -197,7 +198,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 10;
+    z-index: 10; /* Garante que o botão fique acima de tudo */
 }
 
 .theme-toggle:hover {
